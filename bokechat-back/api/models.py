@@ -22,6 +22,9 @@ class Schedule(models.Model):
     end = models.DateTimeField()
     created_by = models.ForeignKey(CustomUser, related_name='schedule', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
 class BookMark(models.Model):
     name = models.CharField(max_length=200)
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='bookmark')

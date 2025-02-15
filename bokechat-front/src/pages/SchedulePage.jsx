@@ -1,17 +1,18 @@
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box, Button, Fab } from "@mui/material";
 import { useState } from "react";
 import { getMonth } from "../lib/day";
-import { Calendar } from "../components/Calendar";
+import { Calendar } from "../features/Schedule/components/Calendar";
 import dayjs from "dayjs";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AddIcon from '@mui/icons-material/Add';
 import { Header } from "../components/Header";
 
 const SchedulePage = () => {
-  const [now, setNow] = useState(dayjs());
-  const prevMonth = () => setNow((now) => now.subtract(1, "month"))
-  const nextMonth = () => setNow((now) => now.add(1, "month"))
-  const thisMonth = () => setNow(dayjs())
+  const [now, setNow] = useState(dayjs().month());
+  const prevMonth = () => setNow((now) => now - 1)
+  const nextMonth = () => setNow((now) => now + 1)
+  const thisMonth = () => setNow(dayjs().month())
 
   return (
     <Box>
@@ -22,7 +23,7 @@ const SchedulePage = () => {
           <Button onClick={prevMonth}>
             <ArrowBackIosNewIcon />
           </Button>
-          <Typography sx={{ mx: 2 }}>{now.format('YYYY年MM月')}</Typography>
+          <Typography sx={{ mx: 2 }}>{dayjs(new Date(dayjs().year(), now)).format('YYYY年MM月')}</Typography>
           <Button onClick={nextMonth}>
             <ArrowForwardIosIcon />
           </Button>
@@ -32,7 +33,11 @@ const SchedulePage = () => {
         </Button>
       </Box>
 
-      <Calendar calendar={getMonth(now.month())} month={now.month()} />
+      <Calendar calendar={getMonth(now)} month={now + 1} />
+
+      <Fab sx={{position: "fixed", right: '24px', bottom: '100px'}} color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
     </Box>
  )
 }

@@ -2,7 +2,6 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-
 // AuthContextの作成
 const AuthContext = createContext();
 
@@ -82,5 +81,5 @@ export function AuthProvider({ children }) {
 }
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired, // childrenを必須のノードとして指定
 };
