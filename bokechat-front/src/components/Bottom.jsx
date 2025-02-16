@@ -15,7 +15,7 @@ export default function Bottom() {
   const urlToValue = {
     "/": 0,
     "/search": 1,
-    "/group": 2,
+    "/groups": 2,
     "/schedule": 3,
     "/profile": 4,
   };
@@ -32,7 +32,7 @@ export default function Bottom() {
   const menu = [
     { title: 'ホーム', href: '/', icon: <HomeIcon /> },
     { title: '検索', href: '/search', icon: <SearchIcon /> },
-    { title: 'グループ', href: '/group', icon: <GroupsIcon /> },
+    { title: 'グループ', href: '/groups', icon: <GroupsIcon /> },
     { title: 'スケジュール', href: '/schedule', icon: <CalendarMonthIcon /> },
     { title: 'マイページ', href: '/profile', icon: <AccountCircleIcon /> },
   ]

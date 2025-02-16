@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Typography } from "@mui/material";
 
 export const Header = () => {
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#333333" }}>
+    <AppBar position="static" sx={{ backgroundColor: "#333333", position: "fixed", top: 0, zIndex: 4000 }}>
       <Toolbar
         sx={{
           backgroundImage: "url(https://wallpaper.forfun.com/fetch/4a/4ac71567ab4e0d5f92cdfd3740fdb76a.jpeg)",

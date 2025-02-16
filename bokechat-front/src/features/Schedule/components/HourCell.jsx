@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { nowDate, nowTime } from "../../../utils/nowDate";
 
 const HourCell = (props) => {
-  const { dateSchedule, date } = props;
+  const { dateSchedule, date, setSchedule } = props;
   const hourList = new Array(25).fill(0).map((_, index) => index);
   const today = dayjs(date).format('YYYY-MM-DD');
 
@@ -13,27 +13,27 @@ const HourCell = (props) => {
     const startDate = nowDate(schedule.start);
     const endDate = nowDate(schedule.end);
 
-    let start = schedule.start;
-    let end = schedule.end;
+    let startToday = schedule.start;
+    let endToday = schedule.end;
 
     if (startDate !== today) {
-      start = dayjs(today).local().startOf("day").format();
+      startToday = dayjs(today).local().startOf("day").format();
     };
 
     if (endDate !== today) {
-      end = dayjs(today).local().endOf("day").format();
+      endToday = dayjs(today).local().endOf("day").format();
     };
 
     return {
       ...schedule,
-      start,
-      end,
+      startToday,
+      endToday,
     }
   }))
 
   const calculatePosition = (schedule) => {
-    const start = nowTime(schedule.start);
-    const end = nowTime(schedule.end);
+    const start = nowTime(schedule.startToday);
+    const end = nowTime(schedule.endToday);
 
     const hourHeight = 45; // 1時間あたりの高さ(px)
     const startHour = dayjs(start).hour();;
@@ -107,6 +107,7 @@ const HourCell = (props) => {
               <ScheduleBlock
                 key={index}
                 schedule={schedule}
+                setSchedule={setSchedule}
                 sx={{
                   position: 'absolute',
                   top: `${top}px`,
@@ -128,6 +129,7 @@ const HourCell = (props) => {
 HourCell.propTypes = {
   dateSchedule: PropTypes.any,
   date: PropTypes.any.isRequired,
+  setSchedule: PropTypes.any.isRequired,
 };
 
 export default HourCell

@@ -9,6 +9,7 @@ import SignupPage from '../pages/SignupPage';
 import LoginPage from '../pages/LoginPage';
 import { AuthProvider, useAuth } from '../hook/AuthContext';
 import PropTypes from 'prop-types';
+import GroupDetailPage from '../pages/GroupDetailPage';
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
@@ -28,7 +29,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'search', element: <SearchPage /> },
-      { path: 'group', element: <GroupPage /> },
+      { path: 'groups', element: <GroupPage /> },
+      { path: 'group/:uuid', element: <GroupDetailPage /> },
       { path: 'schedule', element: <SchedulePage /> },
       { path: 'profile', element: <ProfilePage /> },
     ],

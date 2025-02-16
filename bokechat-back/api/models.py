@@ -42,7 +42,7 @@ class Post(models.Model):
     content = models.FileField(upload_to="post/")
     explanation = models.TextField(max_length=300, blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
-    like = models.ManyToManyField(CustomUser, related_name='movie_like')
+    like = models.ManyToManyField(CustomUser, related_name='movie_like', blank=True, null=True)
     location = models.CharField(null=True, blank=True, max_length=300)
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='post')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -101,21 +101,23 @@ class Group(models.Model):
     name = models.CharField(max_length=50)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     description = models.TextField(max_length=1000, blank=True, null=True)
-    tags = models.ManyToManyField(Tag, related_name='tags')
+    tags = models.ManyToManyField(Tag, related_name='tags', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    date = models.DateTimeField()
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
     budget = models.PositiveIntegerField(blank=True, null=True)
     icon = models.ImageField(
         upload_to="group/",
+        default="misc/722e64ef8f12418691bf75c04b83ebbe.png",
         null=True,
-        blank=True,
+        blank=False,
     )
-    favorite = models.ManyToManyField(CustomUser, related_name='group_favorite')
-    participants = models.ManyToManyField(CustomUser, related_name='group')
+    favorite = models.ManyToManyField(CustomUser, related_name='group_favorite', blank=True, null=True)
+    participants = models.ManyToManyField(CustomUser, related_name='group', blank=True, null=True)
     album = models.ImageField(
         upload_to="group/",
         null=True,
-        blank=False,
+        blank=True,
     )
 
     def is_participant(self, user=None):
@@ -131,7 +133,9 @@ class Group(models.Model):
 class Plan(models.Model):
     content = models.TextField(max_length=5000)
     location = models.CharField(blank=True, null=True, max_length=300)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='plan')
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='plans')
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
 
 class Message(models.Model):
     content = models.TextField(max_length=5000)

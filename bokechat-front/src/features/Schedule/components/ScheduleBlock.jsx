@@ -1,12 +1,13 @@
-import { Box, Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import PropTypes from "prop-types";
 
 const ScheduleBlock = (props) => {
-  const { schedule, sx } = props;
+  const { schedule, sx, setSchedule } = props;
 
   return (
-    <Box
-       sx={{
+    <Button
+      onClick={() => setSchedule(schedule)}
+      sx={{
         ...sx,
         backgroundColor: 'lightblue',
         overflow: "hidden",
@@ -14,16 +15,17 @@ const ScheduleBlock = (props) => {
         whiteSpacen: "nowrap",
         borderRadius: '10px'
        }}>
-        <Typography sx={{color: '#006bff', textAlign: "center"}}>
+        <Typography sx={{color: '#006bff'}}>
           {schedule.title}
         </Typography>
-    </Box>
+    </Button>
   )
 }
 
 ScheduleBlock.propTypes = {
     schedule: PropTypes.any,
     sx: PropTypes.any,
-  };
+    setSchedule: PropTypes.any,
+};
 
 export default ScheduleBlock

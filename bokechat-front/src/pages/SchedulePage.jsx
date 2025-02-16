@@ -18,7 +18,7 @@ const SchedulePage = () => {
     <Box>
       <Header />
 
-      <Box sx={{display: 'flex', justifyContent: "center", position: "relative", my: 1}}>
+      <Box sx={{display: 'flex', justifyContent: "center", position: "relative", my: 1, mt: 8}}>
         <Box sx={{ display: 'flex', alignItems: 'center'}}>
           <Button onClick={prevMonth}>
             <ArrowBackIosNewIcon />
@@ -29,7 +29,7 @@ const SchedulePage = () => {
           </Button>
         </Box>
         <Button sx={{position: "absolute", right: '10px'}} onClick={thisMonth}>
-          <Typography>今日</Typography>
+          <Typography>今月</Typography>
         </Button>
       </Box>
 
