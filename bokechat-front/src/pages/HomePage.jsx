@@ -64,7 +64,7 @@ console.log(posts);
               {posts.pages.map((page, index) => {
                 return (
                   <Box key={index}>
-                    <PostList posts={page.data.results} />
+                    <PostList posts={page.results} />
                   </Box>
                 );
               })}
