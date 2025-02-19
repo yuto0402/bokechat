@@ -25,7 +25,7 @@ const GroupPage = () => {
   });
 
   useEffect(() => {
-    const savedScrollPosition = sessionStorage.getItem("scrollPosition");
+    const savedScrollPosition = sessionStorage.getItem("groupScrollPosition");
     if (savedScrollPosition) {
       window.scrollTo(0, parseInt(savedScrollPosition, 10));
     }
@@ -36,9 +36,9 @@ const GroupPage = () => {
       sessionStorage.setItem("groupScrollPosition", window.scrollY);
     };
 
-    window.addEventListener("groupScroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("groupScroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 

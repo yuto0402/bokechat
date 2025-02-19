@@ -1,9 +1,12 @@
-import { Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
+import { useAuth } from "../hook/AuthContext";
 
 const ProfilePage = () => {
+  const { logout } = useAuth();
+
   return (
     <>
-      <Typography>あなたは今からあほみたいな時間を浪費します。</Typography>
+      <Button onClick={() => logout()}>aho</Button>
     </>
  )
 }

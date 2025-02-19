@@ -30,12 +30,12 @@ const PostList = (props) => {
                 <img style={{width: '100%', height: '100%', objectFit: "cover"}} src={post.content} alt="gren" />
               </Box>
               <Box sx={{mx: 1}}>
-              {post.location &&
+              {post.location && (
                 <Button sx={{px: 0, color: "inherit", justifyContent: "flex-start", gap: 1}}>
                   <PinDropIcon sx={{width: '20px'}} />
                   <Typography sx={{fontSize: '14px'}}>{post.location}</Typography>
                 </Button>
-              }
+              )}
               </Box>
               <Box sx={{display: "flex", gap: 2, ml: 1, mt: '4px'}}>
                 <Button sx={{minWidth: '24px', color: "inherit", p: 0, gap: '2px'}}>

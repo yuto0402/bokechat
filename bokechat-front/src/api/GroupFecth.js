@@ -12,7 +12,10 @@ export const groupsFecth = async ({ pageParam = 1 }) => {
 
 export const groupFecth = async (uuid) => {
   try {
-    const res = await axios.get(`http://localhost:8000/api/group/${uuid}/`);
+    const token = localStorage.getItem('access_token');
+    const res = await axios.get(`http://localhost:8000/api/group/${uuid}/`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     return res.data;
   } catch (error) {
     console.error("Error fetching posts:", error);

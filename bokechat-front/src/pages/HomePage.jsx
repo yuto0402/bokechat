@@ -47,7 +47,6 @@ const HomePage = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
-console.log(posts);
 
   return (
     <>

@@ -10,6 +10,7 @@ import LoginPage from '../pages/LoginPage';
 import { AuthProvider, useAuth } from '../hook/AuthContext';
 import PropTypes from 'prop-types';
 import GroupDetailPage from '../pages/GroupDetailPage';
+import FriendPage from '../pages/FriendPage';
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       { path: 'group/:uuid', element: <GroupDetailPage /> },
       { path: 'schedule', element: <SchedulePage /> },
       { path: 'profile', element: <ProfilePage /> },
+      { path: 'friend/:userId', element: <FriendPage /> },
     ],
   },
   { path: '/signup', element: <SignupPage /> },

@@ -35,8 +35,17 @@ class UserSignup(APIView):
       serializer.save()
       return Response({"message": "アホ氏ね"}, status=status.HTTP_201_CREATED)
 
+class FriendView(APIView):
+  def get(self, request, pk):
+    try:
+        user = CustomUser.objects.get(pk=pk)
+    except CustomUser.DoesNotExist:
+        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+    serializer = UserSerializer(user, context={"request": request})
+    return Response(serializer.data)
+
 class UserView(APIView):
-  permission_class = [IsAuthenticated]
+  permission_classes = [IsAuthenticated]
 
   def get(self, request):
     serializer = UserSerializer(request.user)
@@ -59,9 +68,11 @@ class GroupsView(APIView):
     return paginator.get_paginated_response(serializer.data)
 
 class GroupView(APIView):
-  def get(self, request, pk, format=None):
+  permission_classes = [IsAuthenticated]
+
+  def get(self, request, pk):
     try:
-        group = Group.objects.select_related('host').prefetch_related('tags').prefetch_related('participants').prefetch_related('plans').get(pk=pk)
+        group = Group.objects.select_related('host').prefetch_related('tags').prefetch_related('participants').prefetch_related('plans').prefetch_related('messages').get(pk=pk)
     except Group.DoesNotExist:
         return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 

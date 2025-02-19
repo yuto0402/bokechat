@@ -47,6 +47,13 @@ class PlanSerializer(serializers.ModelSerializer):
     model = Plan
     fields = '__all__'
 
+class MessageSerializer(serializers.ModelSerializer):
+  sender = CreaterSerializer()
+
+  class Meta:
+    model = Message
+    fields = '__all__'
+
 class GroupsSerializer(serializers.ModelSerializer):
   host = CreaterSerializer()
   tags = TagSerializer(many=True)
@@ -60,7 +67,28 @@ class GroupSerializer(serializers.ModelSerializer):
   tags = TagSerializer(many=True)
   participants = CreaterSerializer(many=True)
   plans = PlanSerializer(many=True)
+  isParticipant = serializers.SerializerMethodField()
+  lastMessage = serializers.SerializerMethodField()
 
   class Meta:
     model = Group
     exclude = ['favorite']
+
+  def get_lastMessage(self, instance):
+    if instance.messages.exists():
+        message = instance.messages.all().order_by('-created_at').first()
+        return MessageSerializer(message).data
+    return None
+
+  def get_isParticipant(self, instance):
+    user = self.context.get('request').user
+    return instance.is_participant(user)
+
+  def to_representation(self, instance):
+    representation = super().to_representation(instance)
+    user = self.context.get('request').user
+
+    if not instance.is_participant(user):
+        for field in ['album', 'messages']:
+            representation.pop(field, None)
+    return representation

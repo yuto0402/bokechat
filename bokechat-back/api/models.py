@@ -120,12 +120,15 @@ class Group(models.Model):
         blank=True,
     )
 
+    def is_host(self, user=None):
+        return user is not None and self.host.pk == user.pk
+
     def is_participant(self, user=None):
-        try:
-            _ = self.participants.all.get(pk=user.pk)
-            return True
-        except Exception:
+        if user is None:
             return False
+        if self.is_host(user):
+            return True
+        return self.participants.filter(pk=user.pk).exists()
 
     def __str__(self):
         return self.name
@@ -140,8 +143,11 @@ class Plan(models.Model):
 class Message(models.Model):
     content = models.TextField(max_length=5000)
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='messages')
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.group} (by: {self.sender.username})"
 
 class Search(models.Model):
     content = models.TextField(max_length=500)

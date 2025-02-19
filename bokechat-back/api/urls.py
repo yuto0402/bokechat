@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('signup/', UserSignup.as_view(), name='user-signup'),
     path('user-info/', UserView.as_view(), name='user_info'),
+    path('friend/<int:pk>/', FriendView.as_view(), name='friend'),
     path('posts/', PostView.as_view(), name='posts'),
     path('groups/', GroupsView.as_view(), name='groups'),
     path('group/<uuid:pk>/', GroupView.as_view(), name='group'),

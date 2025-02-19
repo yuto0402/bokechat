@@ -68,6 +68,13 @@ const LoginPage = () => {
       >
         ログイン
       </Button>
+
+      <Box sx={{mt: 3, display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+        <Typography>まだ登録してないアホは</Typography>
+        <Button onClick={() => navigate('/signup')}>
+          <Typography>登録</Typography>
+        </Button>
+      </Box>
     </Box>
   );
 }
