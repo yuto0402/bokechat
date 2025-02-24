@@ -23,3 +23,17 @@ export const groupFecth = async (uuid) => {
   }
 };
 
+export const groupJoin = async (uuid) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const res = await axios.post(`http://localhost:8000/api/group/${uuid}/`,
+    {},
+    {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    throw new Error("Failed to fetch posts"); // エラーメッセージを投げる
+  }
+};

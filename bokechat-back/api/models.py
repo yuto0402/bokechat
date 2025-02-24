@@ -108,7 +108,7 @@ class Group(models.Model):
     budget = models.PositiveIntegerField(blank=True, null=True)
     icon = models.ImageField(
         upload_to="group/",
-        default="misc/722e64ef8f12418691bf75c04b83ebbe.png",
+        default="misc/430450-svetik.jpg",
         null=True,
         blank=False,
     )

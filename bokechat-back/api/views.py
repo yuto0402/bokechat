@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from . import *
@@ -32,8 +32,8 @@ class UserSignup(APIView):
   def post(self, request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
-      serializer.save()
-      return Response({"message": "アホ氏ね"}, status=status.HTTP_201_CREATED)
+        serializer.save()
+        return Response({"message": "アホ氏ね"}, status=status.HTTP_201_CREATED)
 
 class FriendView(APIView):
   def get(self, request, pk):
@@ -71,10 +71,17 @@ class GroupView(APIView):
   permission_classes = [IsAuthenticated]
 
   def get(self, request, pk):
-    try:
-        group = Group.objects.select_related('host').prefetch_related('tags').prefetch_related('participants').prefetch_related('plans').prefetch_related('messages').get(pk=pk)
-    except Group.DoesNotExist:
-        return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-
+    queryset = Group.objects.select_related('host').prefetch_related('tags').prefetch_related('participants').prefetch_related('plans').prefetch_related('messages')
+    group = get_object_or_404(queryset, pk=pk)
     serializer = GroupSerializer(group, context={"request": request})
     return Response(serializer.data)
+
+  def post(self, request, pk):
+    group = get_object_or_404(Group, pk=pk)
+    serializer = GroupSerializer(group, data={}, partial=True, context={"request": request})
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import { nowTime } from "../utils/nowDate";
 import { useState } from "react";
 import ChatDrawer from "../features/Group/ChatDrawer";
+import { useGroupJoin } from "../features/Group/GroupJoin";
 
 const GroupDetailPage = () => {
   const { uuid } = useParams();
@@ -18,12 +19,14 @@ const GroupDetailPage = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
-  const { data: group, isLoading } = useQuery({
-    queryKey: ['post', uuid],
+  const { data: group, isLoading, refetch } = useQuery({
+    queryKey: ['group', uuid],
     queryFn: () => groupFecth(uuid),
     staleTime: 1000 * 60 * 5,
     enabled: !!uuid,
   });
+
+  const { mutate } = useGroupJoin(uuid, refetch);
 
   const toProfile = (userId) => {
     if (userId === user.id) {
@@ -68,9 +71,9 @@ const GroupDetailPage = () => {
               <Avatar src={group.host.icon} alt="" />
               <Typography>{group.host.username}</Typography>
               {group.host.id !== user.id && (
-                <Button>
+                <Box sx={{cursor: "pointer"}}>
                   <Typography>フォロー</Typography>
-                </Button>
+                </Box>
               )}
             </Button>
 
@@ -128,7 +131,7 @@ const GroupDetailPage = () => {
               )}
             </Box>
 
-            {group.isParticipant ? (
+            {group.isParticipant &&
               <Box sx={{mt: 2}}>
                 <Button
                   sx={{
@@ -151,21 +154,19 @@ const GroupDetailPage = () => {
                 </Button>
 
                 <ChatDrawer chatOpen={chatOpen} setChatOpen={setChatOpen} />
-
-                <Box sx={{my: 2}}>
-                  <Button sx={{color: "inherit", mx: 'auto', width: '100%'}}>
-                    <Typography>この集団から逃走する</Typography>
-                  </Button>
-                </Box>
               </Box>
-            ) : (
-              <Box sx={{my: 2}}>
-                <Button sx={{color: "inherit", mx: 'auto', width: '100%'}}>
+            }
+
+
+            <Box sx={{my: 2}}>
+              <Button onClick={() => mutate()} sx={{color: "inherit", mx: 'auto', width: '100%'}}>
+                {group.isParticipant ? (
+                  <Typography sx={{mb: 2}}>この集団から逃走する</Typography>
+                ) : (
                   <Typography>この集団に入る</Typography>
-                </Button>
-              </Box>
-            )}
-
+                )}
+              </Button>
+            </Box>
           </Box>
         )}
       </Box>

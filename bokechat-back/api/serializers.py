@@ -10,6 +10,7 @@ class ScheduleSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
   mySchedule = serializers.SerializerMethodField()
 
+
   class Meta:
     model = CustomUser
     fields = '__all__'
@@ -28,7 +29,6 @@ class CreaterSerializer(serializers.ModelSerializer):
   class Meta:
     model = CustomUser
     fields = ['id', 'username', 'icon']
-
 
 class PostSerializer(serializers.ModelSerializer):
   created_by = CreaterSerializer()
@@ -73,6 +73,16 @@ class GroupSerializer(serializers.ModelSerializer):
   class Meta:
     model = Group
     exclude = ['favorite']
+
+  def update(self, instance, validated_data):
+    user = self.context.get('request').user
+    if instance.is_participant(user):
+        instance.participants.remove(user)
+        instance.save()
+    else:
+        instance.participants.add(user)
+
+    return super().update(instance, validated_data)
 
   def get_lastMessage(self, instance):
     if instance.messages.exists():
